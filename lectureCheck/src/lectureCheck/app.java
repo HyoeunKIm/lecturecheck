@@ -1,4 +1,5 @@
 package lectureCheck;
+
 import java.util.ArrayList;
 
 public class app {
@@ -18,6 +19,16 @@ public class app {
 	whitelist wl = new whitelist();	
 		
 	wl.makelist();
+	/*
+	ArrayList<String> input = new ArrayList();
+	input.add("교수님/N");
+	input.add("강의/N");
+	input.add("시험/N");
+	input.add("수업/N");
+	input.add("학교/N");
+	input.add("과제/N");
 	
+	
+	wl.check_white(input);*/
 	}
 }
