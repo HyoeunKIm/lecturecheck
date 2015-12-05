@@ -5,5 +5,6 @@
 	<classpathentry kind="lib" path="/Users/Hyon/Documents/lectureCheck/JHanNanum-0.8.4-ko/jhannanum.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/CDC-1.0%Foundation-1.0"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/Hyon/Documents/irproject/lectureCheck/guava-18.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
