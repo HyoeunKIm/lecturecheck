@@ -19,5 +19,6 @@ class evalInfo {
 	public ArrayList<String> analyzed_content = new ArrayList<String>();   //전체
 	public ArrayList<String> analyzed_content_useless = new ArrayList<String>();  //U 만 추출
 	public ArrayList<String> analyzed_content_usefull = new ArrayList<String>();  //P N만 추출
-	
+
+	public boolean eval_repetition = false; // 반복되는 강의평 여부
 }
