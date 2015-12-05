@@ -22,82 +22,45 @@ import kr.ac.kaist.swrc.jhannanum.plugin.SupplementPlugin.PosProcessor.SimplePOS
 import kr.ac.kaist.swrc.jhannanum.plugin.SupplementPlugin.PosProcessor.SimplePOSResult22.SimplePOSResult22;
 public class test {
 	public static void main(String[] args){
+		//데이터 가져오기
+		getData data = new getData();
+		ArrayList<evalInfo> evalData=data.getPositiveData("./data/klue_lecture_tmp_min.json");
+		//형태소분석
+		preprocessing pre = new preprocessing();
+		pre.morphemeAnalyzePN(evalData); 
+		//중복검사
 		
-		Workflow workflow = new Workflow();
-		try {
-			/* Setting up the work flow */
-			/* Phase1. Supplement Plug-in for analyzing the plain text */
-			workflow.appendPlainTextProcessor(new SentenceSegmentor(), null);
-			workflow.appendPlainTextProcessor(new InformalSentenceFilter(), null);
-			
-			/* Phase2. Morphological Analyzer Plug-in and Supplement Plug-in for post processing */
-			workflow.setMorphAnalyzer(new ChartMorphAnalyzer(), "./conf/plugin/MajorPlugin/MorphAnalyzer/ChartMorphAnalyzer.json");
-			workflow.appendMorphemeProcessor(new UnknownProcessor(), null);
-			workflow.appendMorphemeProcessor(new SimpleMAResult09(), null);
+		duplicatedWord dupword = new duplicatedWord();
+		dupword.duplicatedWord(evalData);
+		
+		
+		
+		
+		System.out.println("//////////////////전체//////////////////");
 
-			workflow.activateWorkflow(true);
-			
-			/* Analysis using the work flow */
-			String document = "한나눔 형태소 분석기는 KLDP에서 제공하는 공개 소프트웨어 프로젝트 사이트에 등록되어 있다.";
-			
-			workflow.analyze(document);
-			//System.out.println(workflow.getResultOfDocument());
-			String a = workflow.getResultOfDocument();
-			//String a = "한나눔\n	한나눔/N\n형태소\n		형태소/N+는/N\n제공하는\n 	제공/N+하/X+는/E\n	 제공/N+하/X+어/E+는/J\n	제공/N+하/X+어는/E\n	제/X+공하/N+는/J";
-			//a=a.replace("\n","|");
-			Pattern pattern  =  Pattern.compile("[가-힣]+\n\\s+[ㄱ-ㅎㅏ-ㅣ가-힣]+.*[A-Z]\n",Pattern.MULTILINE);
-			ArrayList<String> x = new ArrayList<String>();
-			//String a = workflow.getResultOfSentence();
-				
-			Matcher match = pattern.matcher(a);
-			/*
-			while(match.find()) {
-				System.out.println(match.group());
-			}
-			*/
-			while(match.find()) {
-			    x.add(match.group());
-			}
-			for(int i=0;i<x.size();i++){
-				String tmp = x.get(i);
-				tmp=tmp.substring(tmp.indexOf('\n')+1).trim();
-				String[] tmp2=tmp.split("/");
-				tmp=tmp2[0]+'/'+tmp2[tmp2.length-1];
-				System.out.println(i+"번째 : "+tmp);
-			}
-			
-			/* Close the work flow */
-			workflow.close();
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			System.exit(0);
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(0);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		for(int i=0;i<evalData.get(0).analyzed_content.size();i++){
+			System.out.println(evalData.get(0).analyzed_content.get(i));
+		} 
 		
-		/* Shutdown the workflow */
-		workflow.close();  	
+		System.out.println("//////////////////usefull//////////////////");
+
+		for(int i=0;i<evalData.get(0).analyzed_content_usefull.size();i++){
+			System.out.println(evalData.get(0).analyzed_content_usefull.get(i));
+		} 
+		
+		System.out.println("//////////////////useless//////////////////");
+		
+		for(int i=0;i<evalData.get(0).analyzed_content_useless.size();i++){
+			System.out.println(evalData.get(0).analyzed_content_useless.get(i));
+		} 
+		
+		//asasas
+		System.out.println("usefullPercent : "+evalData.get(0).usefullPercent);
+		System.out.println("duplicatedWords : "+evalData.get(0).duplicated_words_count);
+		for(int i=0;i<evalData.get(0).duplicated_words_list.size();i++){
+			System.out.println(evalData.get(0).duplicated_words_list.get(i));
+		} 
 	}
 }
 	
-	/*
-	public static void getData(String filename){
-		JSONParser parser = new JSONParser();
-		try {
-			JSONArray jsonArr = (JSONArray) parser.parse(new FileReader(filename));
-
-			for (Object o : jsonArr) {
-				JSONObject obj = (JSONObject) o;
-				int firstname = (int) (long) obj.get("no");
-				System.out.println(firstname);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	*/
 
