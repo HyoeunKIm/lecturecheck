@@ -12,23 +12,26 @@ public class app {
 		//강의평가에 관련된 정보들을 형태소 분석한다.
 		pre.morphemeAnalyze(evalData);
 		
+		
 		for(int i=0;i<evalData.get(0).analyzed_content.size();i++){
 			System.out.println(evalData.get(0).analyzed_content.get(i));
 		} */
 		
 	whitelist wl = new whitelist();	
 		
-	wl.makelist();
-	/*
+	//wl.makelist();
+	wl.get_list();
+	
 	ArrayList<String> input = new ArrayList();
 	input.add("교수님/N");
-	input.add("강의/N");
-	input.add("시험/N");
-	input.add("수업/N");
-	input.add("학교/N");
-	input.add("과제/N");
+	input.add("워낙/M");
+	input.add("유명하시/N");
+	input.add("좋/P");
+	input.add("기말고사/N");
+	input.add("부분이/N");
+	input.add("어렵/P");
 	
 	
-	wl.check_white(input);*/
+	wl.check_white(input);
 	}
 }

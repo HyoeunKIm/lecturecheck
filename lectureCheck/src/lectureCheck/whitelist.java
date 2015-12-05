@@ -2,6 +2,14 @@ package lectureCheck;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.HashMultimap;
@@ -16,6 +24,7 @@ public class whitelist {
 	
 	
 	static HashMap<String, Integer> whitemap = new HashMap<String , Integer>();
+	static HashMap<String, Integer> whitelist = new HashMap<String , Integer>();
 	
 	public static void makelist(){
 
@@ -42,50 +51,59 @@ public class whitelist {
 		}
 		Set<Entry<String, Integer>> set = whitemap.entrySet();
 		Iterator<Entry<String, Integer>> it = set.iterator();
+
 		
-		while (it.hasNext()) {
-			Map.Entry<String, Integer> e = (Map.Entry<String, Integer>)it.next();
-			if(e.getValue()>30){
-				System.out.println("단어 : " + e.getKey() + ", 횟수 : " + e.getValue());
-			}
-		}
-		
+		Writer writer = null;
+		try {
+		    writer = new BufferedWriter(new OutputStreamWriter(
+		            new FileOutputStream("whitelist.txt"), "utf-8"));
+
+				while (it.hasNext()) {
+					Map.Entry<String, Integer> e = (Map.Entry<String, Integer>)it.next();
+					if(e.getValue()>20){
+						System.out.println("단어 : " + e.getKey() + ", 횟수 : " + e.getValue());
+						writer.write(e.getKey() + " " + e.getValue()+"\n");
+					}
+				}
+		  } catch (IOException ex) {
+		    // report
+		  } finally {
+		     try {writer.close();} catch (Exception ex) {}
+		  }
 	}
 	
+	public static void get_list(){
+
+	    try {
+	      ////////////////////////////////////////////////////////////////
+	      BufferedReader in = new BufferedReader(new FileReader("whitelist.txt"));
+	      String s;
+			
+	      while ((s = in.readLine()) != null) {
+	       String temp[];
+	       temp = s.split(" ");
+	        whitelist.put(temp[0],Integer.parseInt(temp[1]));
+	      }
+	      in.close();
+	      ////////////////////////////////////////////////////////////////
+	    } catch (IOException e) {
+	        System.err.println(e); // 에러가 있다면 메시지 출력
+	        System.exit(1);
+	    }
+	}
 	
 	public static int check_white(ArrayList input_list){
 		
 		int result = 0;
 		
 		for(int i=0; i<input_list.size();i++){
-			if(whitemap.containsKey(input_list.get(i))){
-				if(whitemap.get(input_list.get(i)) > 300){
-					result = result+5;
-					System.out.println("5: "+input_list.get(i)+", "+whitemap.get(input_list.get(i)));
-				}
-				else if(whitemap.get(input_list.get(i)) > 250){
-					result = result+4;
-					System.out.println("4: "+input_list.get(i)+", "+whitemap.get(input_list.get(i)));
-				}
-				else if(whitemap.get(input_list.get(i)) > 200){
-					result = result+3;
-					System.out.println("3: "+input_list.get(i)+", "+whitemap.get(input_list.get(i)));
-				}
-				else if(whitemap.get(input_list.get(i)) > 100){
-					result = result+2;
-					System.out.println("2: "+input_list.get(i)+", "+whitemap.get(input_list.get(i)));
-				}
-				else if(whitemap.get(input_list.get(i)) > 50){
-					result = result+1;
-					System.out.println("1: "+input_list.get(i)+", "+whitemap.get(input_list.get(i)));
-				}
-				else{
-					System.out.println("0: "+input_list.get(i)+", "+whitemap.get(input_list.get(i)));
-				}
+			if(whitelist.containsKey(input_list.get(i))){
+				result++;
+				System.out.println(input_list.get(i)+", "+whitelist.get(input_list.get(i)));
 			}
 		}
 
-		System.out.println("제 점수는요? "+result);
+		System.out.println("Result "+result);
 		return result;
 	}
 }
