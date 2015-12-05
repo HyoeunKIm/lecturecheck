@@ -30,9 +30,10 @@ public class test {
 		pre.morphemeAnalyzePN(evalData); 
 		//중복검사
 		
+		/*
 		duplicatedWord dupword = new duplicatedWord();
 		dupword.duplicatedWord(evalData);
-		
+		*/
 		
 		
 		
